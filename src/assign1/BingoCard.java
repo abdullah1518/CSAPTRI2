@@ -5,7 +5,7 @@ public class BingoCard {
     private static int[] numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75,};
     private int[][] tempCard = new int[5][5];
 
-    public void startBingo(){
+    public void startBingo() {
         for (int row = 0; row < 5; row++) {
             for (int col = 0; col < 5; col++) {
                 tempCard[row][col] = card[row][col];
@@ -164,10 +164,11 @@ public class BingoCard {
         System.out.println("Completed!~~ owo");
     }
 
-    public boolean checkLineBingo(int picked) {
+    public boolean playBingo(int picked) {
         showCard(tempCard);
+        boolean lineCompleted = false;
+        boolean xCompleted = false;
         System.out.println();
-        boolean completed = false;
         System.out.println("Number: " + picked);
         for (int row = 0; row < 5; row++) {
             for (int col = 0; col < 5; col++) {
@@ -184,7 +185,7 @@ public class BingoCard {
                 if (col != 4 && tempCard[row][col] == tempCard[row][col + 1]) {
                     hline++;
                     if (hline == 4) {
-                        completed = true;
+                        lineCompleted = true;
                     }
                 } else hline = 0;
             }
@@ -195,19 +196,76 @@ public class BingoCard {
                 if (row != 4 && tempCard[row][col] == tempCard[row + 1][col]) {
                     vline++;
                     if (vline == 4) {
-                        completed = true;
+                        lineCompleted = true;
                     }
                 } else vline = 0;
             }
         }
 
-        if (completed) System.out.println("Completed!~~ owo");
+        int majorDiagSum = 0;
+        int minorDiagSum = 0;
+        xCompleted = false;
+        for (int row = 0; row < 5; row++) {
+            majorDiagSum += tempCard[row][row];
+        }
+        for (int row = 0; row < 5; row++) {
+            minorDiagSum += tempCard[row][4 - row];
+        }
+        if (majorDiagSum == 0 || minorDiagSum == 0) {
+            xCompleted = true;
+
+        }
+        if (lineCompleted||xCompleted) System.out.println("Completed!~~ owo");
         else {
-            showCard(tempCard);
-            System.out.println();
             System.out.println("not completed...");
         }
-        return completed;
+        return lineCompleted||xCompleted;
+    }
+
+    public boolean checkBingo(){
+        boolean lineCompleted = false;
+        boolean xCompleted = false;
+        int hline = 0;
+        for (int row = 0; row < 5; row++) {
+            for (int col = 0; col < 5; col++) {
+                if (col != 4 && tempCard[row][col] == tempCard[row][col + 1]) {
+                    hline++;
+                    if (hline == 4) {
+                        lineCompleted = true;
+                    }
+                } else hline = 0;
+            }
+        }
+        int vline = 0;
+        for (int col = 0; col < 5; col++) {
+            for (int row = 0; row < 5; row++) {
+                if (row != 4 && tempCard[row][col] == tempCard[row + 1][col]) {
+                    vline++;
+                    if (vline == 4) {
+                        lineCompleted = true;
+                    }
+                } else vline = 0;
+            }
+        }
+
+        int majorDiagSum = 0;
+        int minorDiagSum = 0;
+        xCompleted = false;
+        for (int row = 0; row < 5; row++) {
+            majorDiagSum += tempCard[row][row];
+        }
+        for (int row = 0; row < 5; row++) {
+            minorDiagSum += tempCard[row][4 - row];
+        }
+        if (majorDiagSum == 0 || minorDiagSum == 0) {
+            xCompleted = true;
+
+        }
+        if (lineCompleted||xCompleted) System.out.println("Completed!~~ owo");
+        else {
+            System.out.println("not completed...");
+        }
+        return lineCompleted||xCompleted;
     }
 
     public boolean checkLineBingo() {
@@ -242,8 +300,80 @@ public class BingoCard {
                 } else vline = 0;
             }
         }
-        if (completed)System.out.println("Completed!~~ owo");
+        if (completed) System.out.println("Completed!~~ owo");
         else System.out.println("not completed...");
         return completed;
+    }
+
+    public void figureXBingo() {
+        resetPickRandom();
+        int[][] checkCard = new int[5][5];
+        for (int row = 0; row < 5; row++) {
+            for (int col = 0; col < 5; col++) {
+                checkCard[row][col] = card[row][col];
+            }
+        }
+        showCard(checkCard);
+        System.out.println();
+        boolean completed = false;
+        while (!completed) {
+            int majorDiagSum = 0;
+            int minorDiagSum = 0;
+            int picked = pickRandom();
+            System.out.println("Random Number: " + picked);
+            for (int row = 0; row < 5; row++) {
+                for (int col = 0; col < 5; col++) {
+                    if (checkCard[row][col] == picked) {
+                        checkCard[row][col] = 0;
+                        showCard(checkCard);
+                        System.out.println();
+                    }
+                }
+            }
+            completed = false;
+            for (int row = 0; row < 5; row++) {
+                majorDiagSum += checkCard[row][row];
+            }
+            for (int row = 0; row < 5; row++) {
+                minorDiagSum += checkCard[row][4 - row];
+            }
+            if (majorDiagSum == 0 || minorDiagSum == 0) {
+                completed = true;
+            }
+        }
+        System.out.println("Completed!~~ owo");
+    }
+
+    public void outerCornerBingo() {
+        resetPickRandom();
+        int[][] checkCard = new int[5][5];
+        for (int row = 0; row < 5; row++) {
+            for (int col = 0; col < 5; col++) {
+                checkCard[row][col] = card[row][col];
+            }
+        }
+        showCard(checkCard);
+        System.out.println();
+        boolean completed = false;
+        while (!completed) {
+            int majorDiagSum = 0;
+            int minorDiagSum = 0;
+            int picked = pickRandom();
+            System.out.println("Random Number: " + picked);
+            for (int row = 0; row < 5; row++) {
+                for (int col = 0; col < 5; col++) {
+                    if (checkCard[row][col] == picked) {
+                        checkCard[row][col] = 0;
+                        showCard(checkCard);
+                        System.out.println();
+                    }
+                }
+            }
+            completed = false;
+            if (checkCard[0][0] == 0 && checkCard[0][1] == 0 && checkCard[1][0] == 0 && checkCard[1][1] == 0) {
+                completed = true;
+            }
+        }
+        System.out.println("Completed!~~ owo");
     }
 }
