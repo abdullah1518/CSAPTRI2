@@ -9,7 +9,9 @@ public class Assign1_6 {
                 {2596,4689},
                 {1923,3941}
         };
+        System.out.println(totalSalesPerSalesMan(sales,3));
         System.out.println(quarterlySales(sales,3));
+        System.out.println(quarterlySalesAve(sales,3));
     }
     public static double  quarterlySales(int[][] sales,int quarter){
         double sum=0;
@@ -30,5 +32,12 @@ public class Assign1_6 {
             }
         }
         return sum/nums;
+    }
+    public static double totalSalesPerSalesMan(int[][] sales, int salemanNo){
+        double sum =0;
+        for (int col = 0; col < sales[salemanNo].length; col++) {
+            sum+=sales[salemanNo][col];
+        }
+        return sum;
     }
 }

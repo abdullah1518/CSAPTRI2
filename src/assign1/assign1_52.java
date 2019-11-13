@@ -1,6 +1,6 @@
 package assign1;
 
-public class assign1_5 {
+public class assign1_52 {
     public static void main(String[] args) {
         int[][] arr1 = new int[8][10];
         for (int row = 0; row < 8; row++) {

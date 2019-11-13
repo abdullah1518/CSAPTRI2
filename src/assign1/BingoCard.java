@@ -337,7 +337,7 @@ public class BingoCard {
             for (int row = 0; row < 5; row++) {
                 minorDiagSum += checkCard[row][4 - row];
             }
-            if (majorDiagSum == 0 || minorDiagSum == 0) {
+            if (majorDiagSum == 0 && minorDiagSum == 0) {
                 completed = true;
             }
         }
